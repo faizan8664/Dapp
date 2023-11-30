@@ -1,3 +1,4 @@
+## faiz 
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
@@ -10,37 +11,32 @@ contract Assessment {
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
 
+    error InsufficientBalance(uint256 balance, uint256 withdrawAmount);
+
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
         balance = initBalance;
     }
 
-    function getBalance() public view returns(uint256){
+    function getBalance() public view returns (uint256) {
         return balance;
     }
 
     function deposit(uint256 _amount) public payable {
-        uint _previousBalance = balance;
+        uint256 _previousBalance = balance;
 
-        // make sure this is the owner
         require(msg.sender == owner, "You are not the owner of this account");
 
-        // perform transaction
         balance += _amount;
 
-        // assert transaction completed successfully
         assert(balance == _previousBalance + _amount);
 
-        // emit the event
         emit Deposit(_amount);
     }
 
-    // custom error
-    error InsufficientBalance(uint256 balance, uint256 withdrawAmount);
-
     function withdraw(uint256 _withdrawAmount) public {
         require(msg.sender == owner, "You are not the owner of this account");
-        uint _previousBalance = balance;
+        uint256 _previousBalance = balance;
         if (balance < _withdrawAmount) {
             revert InsufficientBalance({
                 balance: balance,
@@ -48,13 +44,34 @@ contract Assessment {
             });
         }
 
-        // withdraw the given amount
         balance -= _withdrawAmount;
 
-        // assert the balance is correct
         assert(balance == (_previousBalance - _withdrawAmount));
 
-        // emit the event
         emit Withdraw(_withdrawAmount);
+    }
+
+    // Array Matching Function
+    function matchArray(uint8 _element) public pure returns (bool) {
+        uint8[5] memory targetArray = [1, 3, 5, 7, 9];
+        for (uint8 i = 0; i < targetArray.length; i++) {
+            if (_element == targetArray[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Number Range Matching Function
+    function matchNumberRange(uint256 _number) public pure returns (bool) {
+        uint256 lowerBound = 10;
+        uint256 upperBound = 100;
+        return (_number >= lowerBound && _number <= upperBound);
+    }
+
+    // String Matching Function
+    function matchString(string memory _input) public pure returns (bool) {
+        string memory targetString = "Hello";
+        return (keccak256(abi.encodePacked(_input)) == keccak256(abi.encodePacked(targetString)));
     }
 }
