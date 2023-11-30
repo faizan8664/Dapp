@@ -22,7 +22,7 @@ The frontend, built with React, lets users interact with their Ethereum wallet v
 
 ## Smart Contract Deployment
 
-The smart contract is already deployed on Ethereum at `0x5FbDB2315678afecb367f032d93F642f64180aa3`. If needed, update the contract address in the React app.
+The smart contract is already deployed on Ethereum at `0x5FbDB2315678afecb367f032d93F642f64180aa3`. 
 
 ## Technologies Used
 
